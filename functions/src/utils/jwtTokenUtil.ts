@@ -1,7 +1,7 @@
 import jwt from 'jsonwebtoken';
 import { Request, Response, NextFunction } from 'express';
 
-export const createJwtToken = (username) => {
+export const createJwtToken = (username: string) => {
     const jwtSecretKey: string = process.env.JWT_SECRET_KEY as any;
     const tokenPayload = {
         username,

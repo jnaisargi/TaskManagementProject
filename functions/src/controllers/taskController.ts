@@ -28,7 +28,7 @@ export const createTask = async (req: Request, res: Response) => {
 
         UserTaskModel.create(taskDetails);
         return res.status(201).json(taskDetails);
-    } catch (error) {
+    } catch (error: any) {
         console.log(`Error while creating task${error}`);
         return res.status(400).send({ message: error.message });
     }
@@ -48,7 +48,7 @@ export const findByPriority = async (req: Request, res: Response) => {
         const query = UserTaskModel.find({ username, priority });
         const retrievedData = await query.exec();
         return res.status(200).json(retrievedData);
-    } catch (error) {
+    } catch (error: any) {
         console.log(`Error while retrieving task${error}`);
         return res.status(400).send({ message: error.message });
     }
@@ -67,7 +67,7 @@ export const findAll = async (req: Request, res: Response) => {
         const query = UserTaskModel.find({ username });
         const retrievedData = await query.exec();
         return res.status(200).json(retrievedData);
-    } catch (error) {
+    } catch (error: any) {
         console.log(`Error while retrieving task${error}`);
         return res.status(400).send({ message: error.message });
     }
@@ -104,7 +104,7 @@ export const updateTask = async (req: Request, res: Response) => {
             { new: true },
         );
         return res.status(200).send(updatedData);
-    } catch (error) {
+    } catch (error: any) {
         console.log(`Error while updating task${error}`);
         return res.status(400).send({ message: error.message });
     }
@@ -123,7 +123,7 @@ export const deleteTask = async (req: Request, res: Response) => {
         const query = UserTaskModel.findByIdAndDelete(taskId, { new: true });
         const result = query.exec();
         return res.status(200).send({ message: 'record deleted', deletedTaskDetails: result });
-    } catch (error) {
+    } catch (error: any) {
         console.log(`Error while deleting task${error}`);
         return res.status(400).send({ message: error.message });
     }

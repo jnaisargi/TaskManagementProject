@@ -1,7 +1,7 @@
 const { mongoose } = require('mongoose');
 
 // eslint-disable-next-line import/no-mutable-exports
-export let db;
+export let db: any;
 
 export const connectToDB = () => {
     const mongodb = 'mongodb://127.0.0.1/my_database';
