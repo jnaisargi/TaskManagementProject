@@ -1,14 +1,16 @@
 import { Request, Response } from 'express';
-import { UserTaskModel } from '../model/userTasksSchema';
+import { UserTaskModel, UserTask } from '../model/userTasksSchema';
+import { UserDetails, UserDetailsModel } from '../model/userDetailsSchema'
 import { CustomRequest } from '../utils/jwtTokenUtil';
+import { sendNotification } from '../controllers/notificationController';
 
 export const createTask = async (req: Request, res: Response) => {
     const userdata = (req as CustomRequest).userData;
     const { title } = req.body;
     const { description } = req.body;
     const { priority } = req.body;
-    const { dueDate } = req.body;
-    const { assignedTo } = req.body;
+    const { due_date } = req.body;
+    const { assigned_to } = req.body;
     const { username } = req.body;
 
     try {
@@ -17,14 +19,14 @@ export const createTask = async (req: Request, res: Response) => {
             throw new Error('Username is invalid.');
         }
 
-        const taskDetails = new UserTaskModel({
+        const taskDetails: UserTask = {
             username,
             title,
             description,
             priority,
-            dueDate,
-            assignedTo,
-        });
+            due_date,
+            assigned_to,
+        };
 
         UserTaskModel.create(taskDetails);
         return res.status(201).json(taskDetails);
@@ -75,35 +77,44 @@ export const findAll = async (req: Request, res: Response) => {
 
 export const updateTask = async (req: Request, res: Response) => {
     try {
+        console.log("Inside Update Task---------");
         const userdata = (req as CustomRequest).userData;
         const { username } = req.body;
         const id = req.body._id;
         const { title } = req.body;
         const { description } = req.body;
         const { priority } = req.body;
-        const { dueDate } = req.body;
-        const { assignedTo } = req.body;
+        const { due_date } = req.body;
+        const { assigned_to } = req.body;
 
         console.log(username);
         if (!username || userdata.username !== username) {
             throw new Error('Username is invalid.');
         }
 
-        const taskDetails = {
+        const taskDetails: UserTask = {
             username,
             title,
             description,
             priority,
-            dueDate,
-            assignedTo,
+            due_date,
+            assigned_to,
         };
 
-        const updatedData = await UserTaskModel.findByIdAndUpdate(
+        const result: UserDetails = await UserDetailsModel.findOne({ username }) as any;
+
+        const receiverMailId: string = result?.emailId;
+
+        const updatedData: UserTask = (await UserTaskModel.findByIdAndUpdate(
             { _id: id },
             taskDetails,
             { new: true },
-        );
+        ))?.toJSON() as UserTask;
+
+        await sendNotification(updatedData, receiverMailId);
+
         return res.status(200).send(updatedData);
+
     } catch (error: any) {
         console.log(`Error while updating task${error}`);
         return res.status(400).send({ message: error.message });

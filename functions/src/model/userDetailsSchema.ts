@@ -2,7 +2,18 @@ import mongoose from 'mongoose';
 
 const { Schema } = mongoose;
 
-const userDetailsSchema = new Schema({
+export interface UserDetails {
+    firstName: string,
+    lastName: string,
+    emailId: string,
+    priority: string,
+    username: string,
+    password: string,
+    age: number
+}
+
+
+const UserDetailsSchema = new Schema({
     firstName: { type: String, required: true },
     lastName: { type: String },
     emailId: { type: String, required: true },
@@ -12,4 +23,4 @@ const userDetailsSchema = new Schema({
 });
 
 // eslint-disable-next-line import/prefer-default-export
-export const UserModel = mongoose.model('UserDetails', userDetailsSchema);
+export const UserDetailsModel = mongoose.model('UserDetails', UserDetailsSchema);

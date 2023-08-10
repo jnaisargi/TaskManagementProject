@@ -2,7 +2,16 @@ import mongoose from 'mongoose';
 
 const { Schema } = mongoose;
 
-const userTaskSchema = new Schema({
+export interface UserTask {
+    username: string,
+    title: string,
+    description: string,
+    priority: number,
+    due_date: Date,
+    assigned_to: string,
+}
+
+const UserTaskSchema = new Schema<UserTask>({
     username: { type: String, required: true },
     title: { type: String, required: true },
     description: { type: String },
@@ -12,4 +21,4 @@ const userTaskSchema = new Schema({
 });
 
 // eslint-disable-next-line import/prefer-default-export
-export const UserTaskModel = mongoose.model('userTasks', userTaskSchema);
+export const UserTaskModel = mongoose.model('userTasks', UserTaskSchema);

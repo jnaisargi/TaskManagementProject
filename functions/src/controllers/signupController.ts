@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { UserModel } from '../model/userDetailsSchema';
+import { UserDetailsModel } from '../model/userDetailsSchema';
 
 const signup = async (req: Request, res: Response) => {
     try {
@@ -10,7 +10,7 @@ const signup = async (req: Request, res: Response) => {
         const { password } = req.body;
         const { age } = req.body;
 
-        const signUpDetails = new UserModel({
+        const signUpDetails = new UserDetailsModel({
             firstName,
             lastName,
             emailId,
@@ -19,7 +19,7 @@ const signup = async (req: Request, res: Response) => {
             age,
         });
 
-        await UserModel.create(signUpDetails);
+        await UserDetailsModel.create(signUpDetails);
         return res.status(200).send('Signup Successful.');
     } catch (error) {
         return res.status(400).send('Singup failed.');
