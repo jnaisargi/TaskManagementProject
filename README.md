@@ -1,4 +1,4 @@
-# taskManagementProject
+# TaskManagementProject
 
 The Task Management API is a backend application that provides endpoints to manage tasks, user authentication, and notifications. It allows users to create tasks, update them, assign tasks to users, and receive notifications for task-related events.
 
