@@ -1,4 +1,4 @@
-import { Request, Response } from 'express';
+import { Request, Response } from 'express'; 
 import { UserTaskModel, UserTask } from '../model/userTasksSchema';
 import { UserDetails, UserDetailsModel } from '../model/userDetailsSchema'
 import { CustomRequest } from '../utils/jwtTokenUtil';
