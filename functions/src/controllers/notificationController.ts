@@ -3,16 +3,11 @@ import { google} from 'googleapis';
 import { UserTask } from '../model/userTasksSchema';
 
 export const sendNotification = async (updatedData: UserTask, receiverMailId: string) => {
-    // Design an archtecture to send mail notification
+    
     console.log('Inside sendNotification----');
 
-    const CLIENT_ID = '645815866565-bm4ualk2kfdn9lonsq0sp2kbr73438e0.apps.googleusercontent.com';
-    const CLIENT_SECRET = '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';
-    const REDIRECT_URI = 'https://developers.google.com/oauthplayground';
-    const REFRESH_TOKEN = '1//04GUCQV29N0yKCgYIARAAGAQSNwF-L9IrIOlXsc8hFLfw0sqh9aTWDc3gj1_PPWUyHQcHydf1nLOnQEm8yL_LatXAJThAN_eZc60';
-
-    const oAuth2Client = new google.auth.OAuth2(CLIENT_ID, CLIENT_SECRET, REDIRECT_URI);
-    oAuth2Client.setCredentials({ refresh_token: REFRESH_TOKEN});
+    const oAuth2Client = new google.auth.OAuth2(process.env.CLIENT_ID, process.env.CLIENT_SECRET, process.env.REDIRECT_URI);
+    oAuth2Client.setCredentials({ refresh_token: process.env.REFRESH_TOKEN});
 
     try {
         const accessToken: string = (await oAuth2Client.getAccessToken()).token as any;
@@ -22,9 +17,9 @@ export const sendNotification = async (updatedData: UserTask, receiverMailId: st
             auth: {
                 type: 'OAuth2',
                 user: 'nodejsdummy7@gmail.com',
-                clientId : CLIENT_ID,
-                clientSecret: CLIENT_SECRET,
-                refreshToken: REFRESH_TOKEN,
+                clientId : process.env.CLIENT_ID,
+                clientSecret: process.env.CLIENT_SECRET,
+                refreshToken: process.env.REFRESH_TOKEN,
                 accessToken: accessToken
             }
         });
@@ -44,7 +39,7 @@ export const sendNotification = async (updatedData: UserTask, receiverMailId: st
     
         await transporter.sendMail(mailOptions);
 
-        addNotificationDetailsToDB(updatedData, receiverMailId);
+        // addNotificationDetailsToDB(updatedData, receiverMailId);
     }
     catch (error) {
         console.log(error);
@@ -53,6 +48,7 @@ export const sendNotification = async (updatedData: UserTask, receiverMailId: st
    
 }
 
+/*
 function addNotificationDetailsToDB(updatedData: UserTask, receiverMailId: string) {
     try {
         // const userdata = (req as CustomRequest).userData;
@@ -64,3 +60,4 @@ function addNotificationDetailsToDB(updatedData: UserTask, receiverMailId: strin
     }
     
 }
+*/
